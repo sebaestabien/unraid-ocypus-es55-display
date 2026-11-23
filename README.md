@@ -115,3 +115,7 @@ Accessible directement via le bouton **WebUI** du conteneur Unraid ou par requê
 ## 📄 Licence
 
 Ce projet est distribué sous licence **MIT** — voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 🙏 Remerciements
+* Développé en collaboration avec **Gemini** (IA de Google) pour la rétro-ingénierie du protocole USB et le développement du pilote Python/Docker.
+
