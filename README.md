@@ -1,3 +1,5 @@
+> 🇫🇷 **Français** | 🇬🇧 [Read in English](README.en.md)
+
 # 🖥️ Pilote Unraid & Docker pour Ocypus Sigma ES55 (960×480)
 
 Pilote Linux natif et autonome sous Docker pour piloter l'écran USB **Ocypus Sigma ES55** (`33c3:7789` via `/dev/ttyACM0`) directement depuis un serveur **Unraid**, sans aucune machine virtuelle Windows ni logiciel propriétaire.
