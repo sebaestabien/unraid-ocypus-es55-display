@@ -1,0 +1,36 @@
+services:
+  ocypus-es55:
+    build: .
+    image: ocypus-es55-config:latest
+    container_name: ocypus-es55
+    restart: unless-stopped
+    network_mode: host
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    volumes:
+      - ./:/config:rw
+      - /mnt/user:/mnt/user:ro
+      - /var/local/emhttp:/unraid_emhttp:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/libvirt/qemu:/unraid_vms_xml:ro
+      - /var/run/libvirt/qemu:/unraid_vms_run:ro
+    environment:
+      - DEVICE_PROFILE=ocypus_es55
+      - SERIAL_PORT=/dev/ttyACM0
+      - SCREEN_BRIGHTNESS=80
+      - NIGHT_MODE=true
+      - NIGHT_BRIGHTNESS=15
+      - PAGE_ORDER=1,2,3,4,5,6
+      - PAGE_SWITCH_INTERVAL=30
+      - CLOCK_MODE=analog
+      - DATE_LANG=fr
+      - WEATHER_CITY=Paris
+      - WEATHER_URL=
+      - CUSTOM_PAGE_BG=false
+      - WALLPAPER_SHUFFLE=false
+      - SLIDESHOW_INTERVAL=600
+      - BG_DIM=35
+      - SCREEN_ROTATION=0
+      - REFRESH_INTERVAL=1
+      - API_PORT=8799
+      - TZ=Europe/Paris
