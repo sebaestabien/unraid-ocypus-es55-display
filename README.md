@@ -74,6 +74,18 @@ docker build -t ocypus-es55-config:latest .
 3. Tout en haut dans le menu déroulant **Select a template**, choisissez **`my-ocypus-es55`**.
 4. Renseignez votre ville dans **`WEATHER_CITY`**, ajustez vos préférences et cliquez sur **Apply**.
 
+### Alternative : Installation via Docker Compose (Unraid Compose Plugin ou Linux standard)
+
+Si vous utilisez le plugin **Docker Compose Manager** sur Unraid ou une distribution Linux standard (Ubuntu, Debian, etc.), vous pouvez compiler et démarrer le conteneur en une seule commande :
+
+```bash
+cd /mnt/user/appdata/ocypus-es55-build
+docker compose up -d --build
+```
+
+> **Note :** Sur une distribution Linux standard (hors Unraid), commentez simplement avec un `#` les 3 volumes spécifiques à Unraid (`/mnt/user`, `/var/local/emhttp` et `/etc/libvirt/qemu`) dans le fichier `docker-compose.yml` ; le script ignorera proprement ces sondes.
+
+
 ---
 
 ## ⚙️ Variables d'environnement configurables
