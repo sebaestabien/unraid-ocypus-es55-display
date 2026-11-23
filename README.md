@@ -4,6 +4,22 @@ Pilote Linux natif et autonome sous Docker pour piloter l'écran USB **Ocypus Si
 
 ---
 
+## 📸 Aperçu des 6 pages
+
+| Page 1 — Matériel & Stockage | Page 2 — Horloge, Date & Météo |
+| :---: | :---: |
+| ![Page 1](screenshots/page_1.png) | ![Page 2](screenshots/page_2.png) |
+
+| Page 3 — Conteneurs Docker (1–12) | Page 4 — Conteneurs Docker (13–24) |
+| :---: | :---: |
+| ![Page 3](screenshots/page_3.png) | ![Page 4](screenshots/page_4.png) |
+
+| Page 5 — Machines Virtuelles Unraid | Page 6 — Système & Parité |
+| :---: | :---: |
+| ![Page 5](screenshots/page_5.png) | ![Page 6](screenshots/page_6.png) |
+
+---
+
 ## ✨ Fonctionnalités principales
 
 * **Tableau de bord modulaire sur 6 pages (`PAGE_ORDER`) :**
