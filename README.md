@@ -1,53 +1,130 @@
-# Pilote Unraid pour Ocypus Sigma ES55 (960x480)
+MIT License
 
-Pilote Linux autonome sous Docker pour l'écran USB **Ocypus Sigma ES55** (`33c3:7789` sur `/dev/ttyACM0`).
+Copyright (c) 2026 Unraid Ocypus ES55 Contributors
 
-## 1. Architecture des fichiers
-* `/mnt/user/appdata/ocypus-es55-build/es55_driver.py` : Script principal (protocole USB, rendu graphique, sondes Unraid, météo et API HTTP).
-* `/mnt/user/appdata/ocypus-es55-build/Dockerfile` : Recette de compilation de l'image Docker `ocypus-es55-config:latest`.
-* `/mnt/user/appdata/ocypus-es55-build/wallpapers/` : Dossier des fonds d'écran (`.jpg`, `.png`, `.webp` et `.gif` animés).
-* `/boot/config/plugins/dockerMan/templates-user/my-ocypus-es55.xml` : Modèle XML sauvegardé pour restaurer le conteneur en 1 clic dans Unraid.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## 2. Les 6 Pages disponibles (`PAGE_ORDER`)
-1. **Page 1 — Matériel & Stockage :** Charge/Température CPU, RAM, espace libre Array, température max/moyenne des disques (sans les sortir de veille) + alertes visuelles orange/rouge.
-2. **Page 2 — Horloge, Date & Météo :** Horloge analogique ou numérique XXL, date FR/EN, météo Open-Meteo (température, ressenti, vent, humidité, min/max), compteur Docker et IP serveur.
-3. **Page 3 — Conteneurs Docker (1 à 12) :** Liste des conteneurs actifs avec IP locale et ports.
-4. **Page 4 — Conteneurs Docker (13 à 24) :** Suite de la liste des conteneurs actifs.
-5. **Page 5 — Machines Virtuelles Unraid :** Statut actif/arrêté en direct de toutes vos VMs.
-6. **Page 6 — Système & Parité :** Uptime du serveur, Load Average, statut de l'Array et dernière vérification de parité.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-## 3. Variables configurables dans l'UI Unraid (Docker > Edit)
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+EOF
+
+# 2. Enrichir le README.md avec les instructions complètes d'installation
+cat << 'EOF' > README.md
+# 🖥️ Pilote Unraid & Docker pour Ocypus Sigma ES55 (960×480)
+
+Pilote Linux natif et autonome sous Docker pour piloter l'écran USB **Ocypus Sigma ES55** (`33c3:7789` via `/dev/ttyACM0`) directement depuis un serveur **Unraid**, sans aucune machine virtuelle Windows ni logiciel propriétaire.
+
+---
+
+## ✨ Fonctionnalités principales
+
+* **Tableau de bord modulaire sur 6 pages (`PAGE_ORDER`) :**
+  1. **Page 1 — Matériel & Stockage :** Charge et température CPU, mémoire RAM, espace libre de l'Array et températures des disques durs (lues directement dans `/var/local/emhttp/disks.ini` *sans sortir les disques de veille*), avec **alertes couleurs dynamiques** (orange/rouge en cas de seuil élevé).
+  2. **Page 2 — Horloge, Date & Météo :** Grande horloge analogique à aiguilles ou numérique XXL (`CLOCK_MODE`), date formatée en français ou anglais (`DATE_LANG`), météo en temps réel via Open-Meteo (température, ressenti, vent, humidité, min/max du jour), compteur Docker et IP serveur.
+  3. **Page 3 — Conteneurs Docker (1 à 12) :** Liste des conteneurs actifs avec leur adresse IP locale et leurs ports exposés.
+  4. **Page 4 — Conteneurs Docker (13 à 24) :** Suite de la liste des conteneurs actifs.
+  5. **Page 5 — Machines Virtuelles Unraid :** Statut en direct (actif/arrêté) de toutes vos VMs KVM/QEMU.
+  6. **Page 6 — Système & Parité :** Uptime du serveur, Load Average, statut de l'Array et dernière vérification de parité.
+* **Fonds d'écran dynamiques & GIF animés :** Diaporama séquentiel ou aléatoire (`WALLPAPER_SHUFFLE`), mode fond d'écran dédié par page (`CUSTOM_PAGE_BG` avec `page1.jpg` à `page6.jpg`) et **support natif des `.gif` animés**.
+* **Mode nuit solaire automatique (`NIGHT_MODE`) :** Réduit automatiquement la luminosité entre l'heure exacte du coucher et du lever du soleil calculée pour votre ville.
+* **Support multi-écrans (`DEVICE_PROFILE`) :** Profils JSON configurables dans `devices/` pour adapter facilement la résolution (`960×480`, `800×480`, `480×480`, `480×320`, `1280×480`) ou le protocole série.
+* **API télécommande HTTP intégrée :** Pilotage à distance depuis un navigateur, un smartphone, un Stream Deck ou Home Assistant.
+
+---
+
+## 🚀 Installation pas-à-pas sur Unraid
+
+### Étape 1 : Télécharger les fichiers sur votre serveur
+Ouvrez le terminal web d'Unraid (`>_` en haut à droite) et créez le dossier d'installation :
+
+```bash
+mkdir -p /mnt/user/appdata/ocypus-es55-build
+cd /mnt/user/appdata/ocypus-es55-build
+```
+Copiez tous les fichiers de ce dépôt (`Dockerfile`, `es55_driver.py`, `unraid-template.xml`, ainsi que les dossiers `devices/` et `wallpapers/`) dans `/mnt/user/appdata/ocypus-es55-build/`.
+
+### Étape 2 : Vérifier le port série USB de l'écran
+Branchez l'écran Ocypus Sigma ES55 sur un port USB interne ou arrière de votre serveur Unraid, puis vérifiez qu'il est bien détecté :
+
+```bash
+ls -la /dev/ttyACM*
+```
+*(Il apparaît généralement sous **`/dev/ttyACM0`**).*
+
+### Étape 3 : Compiler l'image Docker locale
+Dans le terminal Unraid, lancez la construction de l'image Docker :
+
+```bash
+cd /mnt/user/appdata/ocypus-es55-build
+docker build -t ocypus-es55-config:latest .
+```
+
+### Étape 4 : Installer le conteneur en un clic via le modèle XML Unraid
+1. Copiez le fichier modèle sur votre clé USB Unraid :
+   ```bash
+   cp /mnt/user/appdata/ocypus-es55-build/unraid-template.xml /boot/config/plugins/dockerMan/templates-user/my-ocypus-es55.xml
+   ```
+2. Dans l'interface web d'Unraid, allez dans l'onglet **Docker** > **Add Container**.
+3. Tout en haut dans le menu déroulant **Select a template**, choisissez **`my-ocypus-es55`**.
+4. Renseignez votre ville dans **`WEATHER_CITY`**, ajustez vos préférences et cliquez sur **Apply**.
+
+---
+
+## ⚙️ Variables d'environnement configurables
 
 | Variable | Défaut | Description |
 | :--- | :--- | :--- |
-| `SERIAL_PORT` | `/dev/ttyACM0` | Port série USB de l'écran |
+| `DEVICE_PROFILE` | `ocypus_es55` | Nom du profil JSON dans `/config/devices` (`ocypus_es55`, `screen_800x480`, `ocypus_es45_480x480`, etc.) |
+| `SERIAL_PORT` | `/dev/ttyACM0` | Périphérique série USB de l'écran |
 | `SCREEN_BRIGHTNESS` | `80` | Luminosité de jour (`0` à `100`) |
-| `NIGHT_MODE` | `true` | Active la baisse de luminosité du coucher au lever du soleil (`true`/`false`) |
+| `NIGHT_MODE` | `true` | Active la baisse automatique de luminosité la nuit (`true`/`false`) |
 | `NIGHT_BRIGHTNESS` | `15` | Luminosité la nuit (`0` à `100`) |
 | `PAGE_ORDER` | `1,2,3,4,5,6` | Ordre et sélection des pages affichées |
-| `PAGE_SWITCH_INTERVAL` | `30` | Temps d'affichage par page (en secondes) |
+| `PAGE_SWITCH_INTERVAL` | `30` | Durée d'affichage de chaque page (en secondes) |
 | `CLOCK_MODE` | `analog` | Style de l'horloge Page 2 (`analog` ou `digital`) |
 | `DATE_LANG` | `fr` | Langue de la date Page 2 (`fr` ou `en`) |
-| `WEATHER_CITY` | `Paris` | Ville pour la météo et les heures de lever/coucher du soleil |
+| `WEATHER_CITY` | `Paris` | Ville utilisée pour la météo et les heures de lever/coucher du soleil |
 | `WEATHER_URL` | *(vide)* | URL API Open-Meteo personnalisée (optionnel) |
-| `CUSTOM_PAGE_BG` | `false` | Active les fonds dédiés par page (`page1.jpg` à `page6.jpg`) |
-| `WALLPAPER_SHUFFLE` | `false` | Lecture aléatoire du diaporama (`true`/`false`) |
-| `SLIDESHOW_INTERVAL` | `600` | Secondes entre deux fonds d'écran (`600` = 10 min) |
-| `BG_DIM` | `35` | Assombrissement du fond d'écran (`0` à `90` %) |
+| `CUSTOM_PAGE_BG` | `false` | Active un fond d'écran dédié par page (`page1.jpg` à `page6.jpg`) |
+| `WALLPAPER_SHUFFLE` | `false` | Lecture aléatoire des fonds d'écran (`true`/`false`) |
+| `SLIDESHOW_INTERVAL` | `600` | Secondes entre deux changements de fond d'écran |
+| `BG_DIM` | `35` | Assombrissement du fond d'écran (`0` à `90` %) pour garantir la lisibilité |
 | `SCREEN_ROTATION` | `0` | Rotation de l'affichage (`0`, `90`, `180`, `270`) |
-| `API_PORT` | `8799` | Port de la télécommande HTTP locale |
+| `API_PORT` | `8799` | Port HTTP de la télécommande locale |
 | `TZ` | `Europe/Paris` | Fuseau horaire |
 
-## 4. Commandes de télécommande HTTP (Port `8799`)
-* `http://192.168.1` : État JSON en direct
-* `http://192.168.1` : Page suivante
-* `http://192.168.1` : Page précédente
-* `http://192.168.1` *(à `6`)* : Afficher directement une page précise
-* `http://192.168.1` : Mettre en pause / reprendre le défilement
-* `http://192.168.1` : Basculer manuellement le mode nuit/jour
+---
 
-## 5. Recompiler après une modification du script
-```bash
-cd /mnt/user/appdata/ocypus-es55-build
-docker build -t ocypus-es55-config:latest . && docker image prune -f
-```
+## 🎮 API Télécommande HTTP locale
+
+Accessible directement via le bouton **WebUI** du conteneur Unraid ou par requête HTTP GET :
+
+* `http://<IP_UNRAID>:8799/status` : Renvoie l'état JSON en direct (`page`, `paused`, `night`)
+* `http://<IP_UNRAID>:8799/next` : Passe immédiatement à la page suivante
+* `http://<IP_UNRAID>:8799/prev` : Revient à la page précédente
+* `http://<IP_UNRAID>:8799/page/1` *(à `6`)* : Affiche directement la page demandée
+* `http://<IP_UNRAID>:8799/pause` : Met en pause ou reprend le défilement automatique
+* `http://<IP_UNRAID>:8799/night/toggle` : Active ou désactive manuellement le mode nuit
+
+---
+
+## 📄 Licence
+
+Ce projet est distribué sous licence **MIT** — voir le fichier [LICENSE](LICENSE) pour plus de détails.
+EOF
+
+# 3. Corriger les permissions pour un partage Windows sans erreur
+chown -R nobody:users /mnt/user/appdata/ocypus-es55-build && chmod -R 775 /mnt/user/appdata/ocypus-es55-build
