@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>ocypus-es55</Name>
+  <Repository>ocypus-es55-config:latest</Repository>
+  <Registry/>
+  <Network>host</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project/>
+  <Overview>Pilote autonome Unraid pour ecran USB Ocypus Sigma ES55 (960x480) avec 6 pages rotatives, meteo, horloge analogique/numerique, GIF animes, mode nuit solaire, profils multi-ecrans et telecommande HTTP.</Overview>
+  <Category>Tools:System Status:</Category>
+  <WebUI>http://[IP]:8799/status</WebUI>
+  <TemplateURL/>
+  <Icon>https://githubusercontent.com</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="Ecran USB Ocypus" Target="" Default="" Mode="" Description="Peripherique serie CDC ACM de l ecran" Type="Device" Display="always" Required="true" Mask="false">/dev/ttyACM0</Config>
+  <Config Name="Config &amp; Wallpapers" Target="/config" Default="/mnt/user/appdata/ocypus-es55-build" Mode="rw" Description="Dossier contenant wallpapers et devices" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/ocypus-es55-build</Config>
+  <Config Name="Array Unraid" Target="/mnt/user" Default="/mnt/user" Mode="ro" Description="Lecture de l espace disque global" Type="Path" Display="always" Required="true" Mask="false">/mnt/user</Config>
+  <Config Name="Unraid State (Disques &amp; Parite)" Target="/unraid_emhttp" Default="/var/local/emhttp" Mode="ro" Description="Lecture des temperatures disques et statut parite" Type="Path" Display="always" Required="true" Mask="false">/var/local/emhttp</Config>
+  <Config Name="Docker Socket" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="ro" Description="Lecture des conteneurs Docker actifs" Type="Path" Display="always" Required="true" Mask="false">/var/run/docker.sock</Config>
+  <Config Name="Unraid VMs Config" Target="/unraid_vms_xml" Default="/etc/libvirt/qemu" Mode="ro" Description="Liste des VMs configurees" Type="Path" Display="always" Required="false" Mask="false">/etc/libvirt/qemu</Config>
+  <Config Name="Unraid VMs State" Target="/unraid_vms_run" Default="/var/run/libvirt/qemu" Mode="ro" Description="Etat actif des VMs" Type="Path" Display="always" Required="false" Mask="false">/var/run/libvirt/qemu</Config>
+  <Config Name="Profil Ecran" Target="DEVICE_PROFILE" Default="ocypus_es55" Mode="" Description="Nom du fichier JSON dans /config/devices" Type="Variable" Display="always" Required="false" Mask="false">ocypus_es55</Config>
+  <Config Name="SERIAL_PORT" Target="SERIAL_PORT" Default="/dev/ttyACM0" Mode="" Description="Port serie USB de l ecran" Type="Variable" Display="always" Required="true" Mask="false">/dev/ttyACM0</Config>
+  <Config Name="SCREEN_BRIGHTNESS" Target="SCREEN_BRIGHTNESS" Default="80" Mode="" Description="Luminosite de jour (0 a 100)" Type="Variable" Display="always" Required="true" Mask="false">80</Config>
+  <Config Name="NIGHT_MODE" Target="NIGHT_MODE" Default="true" Mode="" Description="Baisse de luminosite du coucher au lever du soleil" Type="Variable" Display="always" Required="false" Mask="false">true</Config>
+  <Config Name="NIGHT_BRIGHTNESS" Target="NIGHT_BRIGHTNESS" Default="15" Mode="" Description="Luminosite la nuit (0 a 100)" Type="Variable" Display="always" Required="false" Mask="false">15</Config>
+  <Config Name="PAGE_ORDER" Target="PAGE_ORDER" Default="1,2,3,4,5,6" Mode="" Description="Ordre des pages affichees" Type="Variable" Display="always" Required="false" Mask="false">1,2,3,4,5,6</Config>
+  <Config Name="PAGE_SWITCH_INTERVAL" Target="PAGE_SWITCH_INTERVAL" Default="30" Mode="" Description="Secondes par page" Type="Variable" Display="always" Required="false" Mask="false">30</Config>
+  <Config Name="CLOCK_MODE" Target="CLOCK_MODE" Default="analog" Mode="" Description="Style horloge page 2 (analog ou digital)" Type="Variable" Display="always" Required="false" Mask="false">analog</Config>
+  <Config Name="DATE_LANG" Target="DATE_LANG" Default="fr" Mode="" Description="Langue de la date (fr ou en)" Type="Variable" Display="always" Required="false" Mask="false">fr</Config>
+  <Config Name="WEATHER_CITY" Target="WEATHER_CITY" Default="Paris" Mode="" Description="Ville pour la meteo" Type="Variable" Display="always" Required="false" Mask="false">Paris</Config>
+  <Config Name="WEATHER_URL" Target="WEATHER_URL" Default="" Mode="" Description="URL API Open-Meteo personnalisee (optionnel)" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="CUSTOM_PAGE_BG" Target="CUSTOM_PAGE_BG" Default="false" Mode="" Description="Fond dedie par page page1..page6 (true/false)" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="WALLPAPER_SHUFFLE" Target="WALLPAPER_SHUFFLE" Default="false" Mode="" Description="Diaporama aleatoire (true/false)" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
+  <Config Name="SLIDESHOW_INTERVAL" Target="SLIDESHOW_INTERVAL" Default="600" Mode="" Description="Secondes entre deux fonds d ecran" Type="Variable" Display="always" Required="false" Mask="false">600</Config>
+  <Config Name="BG_DIM" Target="BG_DIM" Default="35" Mode="" Description="Assombrissement du fond (0 a 90)" Type="Variable" Display="always" Required="false" Mask="false">35</Config>
+  <Config Name="SCREEN_ROTATION" Target="SCREEN_ROTATION" Default="0" Mode="" Description="Rotation ecran (0, 90, 180, 270)" Type="Variable" Display="advanced" Required="false" Mask="false">0</Config>
+  <Config Name="REFRESH_INTERVAL" Target="REFRESH_INTERVAL" Default="1" Mode="" Description="Rafraichissement en secondes" Type="Variable" Display="advanced" Required="false" Mask="false">1</Config>
+  <Config Name="API_PORT" Target="API_PORT" Default="8799" Mode="" Description="Port HTTP de la telecommande locale" Type="Variable" Display="advanced" Required="false" Mask="false">8799</Config>
+  <Config Name="TZ" Target="TZ" Default="Europe/Paris" Mode="" Description="Fuseau horaire" Type="Variable" Display="always" Required="false" Mask="false">Europe/Paris</Config>
+</Container>
