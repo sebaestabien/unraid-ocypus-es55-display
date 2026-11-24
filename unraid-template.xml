@@ -38,7 +38,6 @@
   <Config Name="CLOCK_MODE" Target="CLOCK_MODE" Default="analog" Mode="" Description="Style horloge page 2 (analog ou digital)" Type="Variable" Display="always" Required="false" Mask="false">analog</Config>
   <Config Name="DATE_LANG" Target="DATE_LANG" Default="fr" Mode="" Description="Langue de la date (fr ou en)" Type="Variable" Display="always" Required="false" Mask="false">fr</Config>
   <Config Name="WEATHER_CITY" Target="WEATHER_CITY" Default="Paris" Mode="" Description="Ville pour la meteo" Type="Variable" Display="always" Required="false" Mask="false">Paris</Config>
-  <Config Name="WEATHER_URL" Target="WEATHER_URL" Default="" Mode="" Description="URL API Open-Meteo personnalisee (optionnel)" Type="Variable" Display="always" Required="false" Mask="false"/>
   <Config Name="CUSTOM_PAGE_BG" Target="CUSTOM_PAGE_BG" Default="false" Mode="" Description="Fond dedie par page page1..page6 (true/false)" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
   <Config Name="WALLPAPER_SHUFFLE" Target="WALLPAPER_SHUFFLE" Default="false" Mode="" Description="Diaporama aleatoire (true/false)" Type="Variable" Display="always" Required="false" Mask="false">false</Config>
   <Config Name="SLIDESHOW_INTERVAL" Target="SLIDESHOW_INTERVAL" Default="600" Mode="" Description="Secondes entre deux fonds d ecran" Type="Variable" Display="always" Required="false" Mask="false">600</Config>
